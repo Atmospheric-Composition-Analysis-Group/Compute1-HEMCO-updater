@@ -1,0 +1,20 @@
+#!/bin/bash
+#BSUB -n 4
+#BSUB -R "rusage[mem=4000] span[hosts=1]"
+#BSUB -q rvmartin
+#BSUB -W 168:00
+#BSUB -a 'docker(liambindle/my-python-environment:2020-05)'
+#BSUB -o logs/HEMCO-update-%J.txt
+
+set -e
+
+ROOT_DIR=/storage1/fs1/rvmartin/Active/GEOS-Chem-shared/UpdateHEMCO
+while read version; do
+	while read new_data_dir; do
+		cd /ExtData/HEMCO
+		wget -r -nH -nv -o $ROOT_DIR/logs/wget-log.txt --cut-dirs=4 "ftp://ftp.as.harvard.edu/gcgrid/data/ExtData/$new_data_dir"
+	done < updated_files/$version
+	
+	cd $ROOT_DIR
+	echo "$(date --iso-8601): Downloaded updates for $version" >> history.txt
+done < download_versions.txt

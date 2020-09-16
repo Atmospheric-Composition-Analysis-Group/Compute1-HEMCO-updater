@@ -1,0 +1,12 @@
+This is a tool to automatically download updated data directories from the Harvard FTP.
+
+Usage
+-----
+1. Create a file in ./updated_files that specifies the updated data directories for the given version.
+2. Overwrite download_versions.txt with the versions that you want to download.
+3. Submit update_hemco.bsub (i.e., run "bsub < update_hemco.bsub" in the current directory)
+
+Notes
+-----
+- The history of previously downloaded versions is appended to history.txt.
+- Log files go into the ./logs directory.
